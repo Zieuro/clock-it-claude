@@ -1,0 +1,14 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp" android:height="108dp"
+    android:viewportWidth="108" android:viewportHeight="108">
+    <!-- track -->
+    <path android:strokeColor="#FF1E2633" android:strokeWidth="5"
+        android:pathData="M54,30 A24,24 0 1,1 53.99,30" />
+    <!-- progress arc -->
+    <path android:strokeColor="#FF3D8BFF" android:strokeWidth="5" android:strokeLineCap="round"
+        android:pathData="M54,30 A24,24 0 1,1 30,54" />
+    <!-- hands -->
+    <path android:strokeColor="#FFEAF2FF" android:strokeWidth="4" android:strokeLineCap="round"
+        android:pathData="M54,54 L54,40 M54,54 L63,59" />
+    <path android:fillColor="#FF5CC8FF" android:pathData="M54,54 m-3,0 a3,3 0 1,0 6,0 a3,3 0 1,0 -6,0" />
+</vector>
