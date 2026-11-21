@@ -1,3 +1,5 @@
+import java.util.Properties
+
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
@@ -7,18 +9,36 @@ plugins {
 
 android {
     namespace = "com.clockit.app"
-    compileSdk = 35
+    compileSdk = 36
 
     defaultConfig {
-        applicationId = "com.clockit.app"
+        applicationId = "com.zieuro.clock_it_demo"
         minSdk = 26
-        targetSdk = 35
-        versionCode = 1
-        versionName = "1.0"
+        targetSdk = 36
+        // Every upload to Play needs a higher versionCode: ./gradlew bundleRelease -PversionCode=2
+        versionCode = (project.findProperty("versionCode") as String?)?.toInt() ?: 1
+        versionName = (project.findProperty("versionName") as String?) ?: "1.0"
+    }
+
+    // Upload key lives outside git: signing/keystore.properties (or CLOCKIT_KEYSTORE_PROPERTIES env var).
+    val keystoreProps = Properties().apply {
+        val f = rootProject.file(System.getenv("CLOCKIT_KEYSTORE_PROPERTIES") ?: "signing/keystore.properties")
+        if (f.exists()) f.inputStream().use { load(it) }
+    }
+    signingConfigs {
+        if (keystoreProps.isNotEmpty()) {
+            create("upload") {
+                storeFile = file(keystoreProps.getProperty("storeFile"))
+                storePassword = keystoreProps.getProperty("storePassword")
+                keyAlias = keystoreProps.getProperty("keyAlias")
+                keyPassword = keystoreProps.getProperty("keyPassword")
+            }
+        }
     }
 
     buildTypes {
         release {
+            signingConfig = signingConfigs.findByName("upload")
             isMinifyEnabled = true
             isShrinkResources = true
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"))
